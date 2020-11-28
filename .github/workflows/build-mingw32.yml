@@ -16,4 +16,4 @@ jobs:
     - name: build
       run: .github/scripts/build-mingw.sh
       env:
-        MINGW_PREFIX=i686-w64-mingw32
+        MINGW_PREFIX: i686-w64-mingw32
