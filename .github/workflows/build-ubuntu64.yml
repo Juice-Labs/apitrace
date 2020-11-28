@@ -1,4 +1,4 @@
-name: build
+name: build-ubuntu64
 
 on: [push]
 
