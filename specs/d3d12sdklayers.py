@@ -1,6 +1,7 @@
 ##########################################################################
 #
-# Copyright 2009-2016 VMware, Inc.
+# Copyright 2020 Joshua Ashton for Valve Software
+# Copyright 2021 David McCloskey for Juice Technologies, Inc.
 # All Rights Reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1018,8 +1019,8 @@ ID3D12Debug3.methods += [
 ]
 
 ID3D12DebugDevice1.methods += [
-    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), (OpaquePointer(Const(Void)), 'pData'), (UINT, 'DataSize')]),
-    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), Out(OpaquePointer(Void), 'pData'), (UINT, 'DataSize')]),
+    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), (Blob(Const(Void), 'DataSize'), 'pData'), (UINT, 'DataSize')]),
+    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), Out(Blob(Void, 'DataSize'), 'pData'), (UINT, 'DataSize')]),
     StdMethod(HRESULT, 'ReportLiveDeviceObjects', [(D3D12_RLDO_FLAGS, 'Flags')]),
 ]
 
@@ -1030,18 +1031,12 @@ ID3D12DebugDevice.methods += [
 ]
 
 ID3D12DebugDevice2.methods += [
-    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), (OpaquePointer(Const(Void)), 'pData'), (UINT, 'DataSize')]),
-    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), Out(OpaquePointer(Void), 'pData'), (UINT, 'DataSize')]),
+    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), (Blob(Const(Void), 'DataSize'), 'pData'), (UINT, 'DataSize')]),
+    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_DEVICE_PARAMETER_TYPE, 'Type'), Out(Blob(Void, 'DataSize'), 'pData'), (UINT, 'DataSize')]),
 ]
 
 ID3D12DebugCommandQueue.methods += [
     StdMethod(BOOL, 'AssertResourceState', [(ObjPointer(ID3D12Resource), 'pResource'), (UINT, 'Subresource'), (UINT, 'State')]),
-]
-
-ID3D12DebugCommandList1.methods += [
-    StdMethod(BOOL, 'AssertResourceState', [(ObjPointer(ID3D12Resource), 'pResource'), (UINT, 'Subresource'), (UINT, 'State')]),
-    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), (OpaquePointer(Const(Void)), 'pData'), (UINT, 'DataSize')]),
-    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), Out(OpaquePointer(Void), 'pData'), (UINT, 'DataSize')]),
 ]
 
 ID3D12DebugCommandList.methods += [
@@ -1050,9 +1045,15 @@ ID3D12DebugCommandList.methods += [
     StdMethod(D3D12_DEBUG_FEATURE, 'GetFeatureMask', []),
 ]
 
+ID3D12DebugCommandList1.methods += [
+    StdMethod(BOOL, 'AssertResourceState', [(ObjPointer(ID3D12Resource), 'pResource'), (UINT, 'Subresource'), (UINT, 'State')]),
+    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), (Blob(Const(Void), 'DataSize'), 'pData'), (UINT, 'DataSize')]),
+    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), Out(Blob(Void, 'DataSize'), 'pData'), (UINT, 'DataSize')]),
+]
+
 ID3D12DebugCommandList2.methods += [
-    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), (OpaquePointer(Const(Void)), 'pData'), (UINT, 'DataSize')]),
-    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), Out(OpaquePointer(Void), 'pData'), (UINT, 'DataSize')]),
+    StdMethod(HRESULT, 'SetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), (Blob(Const(Void), 'DataSize'), 'pData'), (UINT, 'DataSize')]),
+    StdMethod(HRESULT, 'GetDebugParameter', [(D3D12_DEBUG_COMMAND_LIST_PARAMETER_TYPE, 'Type'), Out(Blob(Void, 'DataSize'), 'pData'), (UINT, 'DataSize')]),
 ]
 
 ID3D12SharingContract.methods += [
