@@ -394,35 +394,21 @@ D3D12_RT_FORMAT_ARRAY = Struct('D3D12_RT_FORMAT_ARRAY', [
     (Array(DXGI_FORMAT, 8), 'RTFormats'),
     (UINT, 'NumRenderTargets'),
 ])
-D3D12_PIPELINE_STATE_STREAM = Polymorphic('_getStateStreamType(_blob_ptr)', [
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_ROOT_SIGNATURE', Pointer(ObjPointer(ID3D12RootSignature))),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_VS', Pointer(D3D12_SHADER_BYTECODE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_PS', Pointer(D3D12_SHADER_BYTECODE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DS', Pointer(D3D12_SHADER_BYTECODE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_HS', Pointer(D3D12_SHADER_BYTECODE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_GS', Pointer(D3D12_SHADER_BYTECODE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_CS', Pointer(D3D12_SHADER_BYTECODE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_STREAM_OUTPUT', Pointer(D3D12_STREAM_OUTPUT_DESC)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_BLEND', Pointer(D3D12_BLEND_DESC)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_SAMPLE_MASK', Pointer(UINT)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RASTERIZER', Pointer(D3D12_RASTERIZER_DESC)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL', Pointer(D3D12_DEPTH_STENCIL_DESC)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_INPUT_LAYOUT', Pointer(D3D12_INPUT_LAYOUT_DESC)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_IB_STRIP_CUT_VALUE', Pointer(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_PRIMITIVE_TOPOLOGY', Pointer(D3D12_PRIMITIVE_TOPOLOGY_TYPE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RENDER_TARGET_FORMATS', Pointer(D3D12_RT_FORMAT_ARRAY)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL_FORMAT', Pointer(DXGI_FORMAT)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_SAMPLE_DESC', Pointer(DXGI_SAMPLE_DESC)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_NODE_MASK', Pointer(UINT)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_CACHED_PSO', Pointer(D3D12_CACHED_PIPELINE_STATE)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_FLAGS', Pointer(D3D12_PIPELINE_STATE_FLAGS)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL1', Pointer(D3D12_DEPTH_STENCIL_DESC1)),
-    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_VIEW_INSTANCING', Pointer(D3D12_VIEW_INSTANCING_DESC)),
-], None, contextLess=False, stream=True, streamEnum=D3D12_PIPELINE_STATE_SUBOBJECT_TYPE, streamSize='pDesc->SizeInBytes', streamAlignment='sizeof(void*)')
 
-D3D12_PIPELINE_STATE_STREAM_DESC = Struct('D3D12_PIPELINE_STATE_STREAM_DESC', [
-    (SIZE_T, 'SizeInBytes'),
-    (D3D12_PIPELINE_STATE_STREAM, 'pPipelineStateSubobjectStream'),
+D3D12_VIEW_INSTANCE_LOCATION = Struct('D3D12_VIEW_INSTANCE_LOCATION', [
+    (UINT, 'ViewportArrayIndex'),
+    (UINT, 'RenderTargetArrayIndex'),
+])
+
+D3D12_VIEW_INSTANCING_FLAGS = Enum('D3D12_VIEW_INSTANCING_FLAGS', [
+    'D3D12_VIEW_INSTANCING_FLAG_NONE',
+    'D3D12_VIEW_INSTANCING_FLAG_ENABLE_VIEW_INSTANCE_MASKING',
+])
+
+D3D12_VIEW_INSTANCING_DESC = Struct('D3D12_VIEW_INSTANCING_DESC', [
+    (UINT, 'ViewInstanceCount'),
+    (Array(Const(D3D12_VIEW_INSTANCE_LOCATION), '{self}.ViewInstanceCount'), 'pViewInstanceLocations'),
+    (D3D12_VIEW_INSTANCING_FLAGS, 'Flags'),
 ])
 
 D3D12_PIPELINE_STATE_SUBOBJECT_TYPE = Enum('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE', [
@@ -452,6 +438,37 @@ D3D12_PIPELINE_STATE_SUBOBJECT_TYPE = Enum('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE'
     'D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_AS',
     'D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_MS',
     'D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_MAX_VALID',
+])
+
+D3D12_PIPELINE_STATE_STREAM = Polymorphic('_getStateStreamType(_blob_ptr)', [
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_ROOT_SIGNATURE', Pointer(ObjPointer(ID3D12RootSignature))),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_VS', Pointer(D3D12_SHADER_BYTECODE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_PS', Pointer(D3D12_SHADER_BYTECODE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DS', Pointer(D3D12_SHADER_BYTECODE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_HS', Pointer(D3D12_SHADER_BYTECODE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_GS', Pointer(D3D12_SHADER_BYTECODE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_CS', Pointer(D3D12_SHADER_BYTECODE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_STREAM_OUTPUT', Pointer(D3D12_STREAM_OUTPUT_DESC)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_BLEND', Pointer(D3D12_BLEND_DESC)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_SAMPLE_MASK', Pointer(UINT)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RASTERIZER', Pointer(D3D12_RASTERIZER_DESC)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL', Pointer(D3D12_DEPTH_STENCIL_DESC)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_INPUT_LAYOUT', Pointer(D3D12_INPUT_LAYOUT_DESC)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_IB_STRIP_CUT_VALUE', Pointer(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_PRIMITIVE_TOPOLOGY', Pointer(D3D12_PRIMITIVE_TOPOLOGY_TYPE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RENDER_TARGET_FORMATS', Pointer(D3D12_RT_FORMAT_ARRAY)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL_FORMAT', Pointer(DXGI_FORMAT)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_SAMPLE_DESC', Pointer(DXGI_SAMPLE_DESC)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_NODE_MASK', Pointer(UINT)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_CACHED_PSO', Pointer(D3D12_CACHED_PIPELINE_STATE)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_FLAGS', Pointer(D3D12_PIPELINE_STATE_FLAGS)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL1', Pointer(D3D12_DEPTH_STENCIL_DESC1)),
+    ('D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_VIEW_INSTANCING', Pointer(D3D12_VIEW_INSTANCING_DESC)),
+], None, contextLess=False, stream=True, streamEnum=D3D12_PIPELINE_STATE_SUBOBJECT_TYPE, streamSize='pDesc->SizeInBytes', streamAlignment='sizeof(void*)')
+
+D3D12_PIPELINE_STATE_STREAM_DESC = Struct('D3D12_PIPELINE_STATE_STREAM_DESC', [
+    (SIZE_T, 'SizeInBytes'),
+    (D3D12_PIPELINE_STATE_STREAM, 'pPipelineStateSubobjectStream'),
 ])
 
 D3D12_FEATURE = Enum('D3D12_FEATURE', [
@@ -1135,22 +1152,6 @@ D3D12_RESOLVE_MODE = Enum('D3D12_RESOLVE_MODE', [
 D3D12_SAMPLE_POSITION = Struct('D3D12_SAMPLE_POSITION', [
     (INT8, 'X'),
     (INT8, 'Y'),
-])
-
-D3D12_VIEW_INSTANCE_LOCATION = Struct('D3D12_VIEW_INSTANCE_LOCATION', [
-    (UINT, 'ViewportArrayIndex'),
-    (UINT, 'RenderTargetArrayIndex'),
-])
-
-D3D12_VIEW_INSTANCING_FLAGS = Enum('D3D12_VIEW_INSTANCING_FLAGS', [
-    'D3D12_VIEW_INSTANCING_FLAG_NONE',
-    'D3D12_VIEW_INSTANCING_FLAG_ENABLE_VIEW_INSTANCE_MASKING',
-])
-
-D3D12_VIEW_INSTANCING_DESC = Struct('D3D12_VIEW_INSTANCING_DESC', [
-    (UINT, 'ViewInstanceCount'),
-    (Array(Const(D3D12_VIEW_INSTANCE_LOCATION), '{self}.ViewInstanceCount'), 'pViewInstanceLocations'),
-    (D3D12_VIEW_INSTANCING_FLAGS, 'Flags'),
 ])
 
 D3D12_SHADER_COMPONENT_MAPPING = Enum('D3D12_SHADER_COMPONENT_MAPPING', [
@@ -2033,26 +2034,6 @@ D3D12_STATE_SUBOBJECT_TYPE = Enum('D3D12_STATE_SUBOBJECT_TYPE', [
     'D3D12_STATE_SUBOBJECT_TYPE_MAX_VALID',
 ])
 
-# Avoid infinite recursion with a polymorph of no exports
-D3D12_STATE_SUBOBJECT_POLYMORPH_NO_EXPORTS = [
-    ('D3D12_STATE_SUBOBJECT_TYPE_STATE_OBJECT_CONFIG', Pointer(Const(D3D12_STATE_OBJECT_CONFIG))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_GLOBAL_ROOT_SIGNATURE', Pointer(Const(D3D12_GLOBAL_ROOT_SIGNATURE))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_LOCAL_ROOT_SIGNATURE', Pointer(Const(D3D12_LOCAL_ROOT_SIGNATURE))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_NODE_MASK', Pointer(Const(D3D12_NODE_MASK))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_DXIL_LIBRARY', Pointer(Const(D3D12_DXIL_LIBRARY_DESC))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_EXISTING_COLLECTION', Pointer(Const(D3D12_EXISTING_COLLECTION_DESC))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION', Pointer(Const(D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_SHADER_CONFIG', Pointer(Const(D3D12_RAYTRACING_SHADER_CONFIG))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_PIPELINE_CONFIG', Pointer(Const(D3D12_RAYTRACING_PIPELINE_CONFIG))),
-    ('D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP', Pointer(Const(D3D12_HIT_GROUP_DESC))),
-]
-
-D3D12_STATE_SUBOBJECT = Struct('D3D12_STATE_SUBOBJECT', [
-    (D3D12_STATE_SUBOBJECT_TYPE, 'Type'),
-    # NOTE(damcclos): Linked list of this object. Need to implement support.
-    (OpaquePointer(Const(Void)), 'pDesc'),
-])
-
 D3D12_STATE_OBJECT_FLAGS = EnumFlags('D3D12_STATE_OBJECT_FLAGS', [
     'D3D12_STATE_OBJECT_FLAG_NONE',
     'D3D12_STATE_OBJECT_FLAG_ALLOW_LOCAL_DEPENDENCIES_ON_EXTERNAL_DEFINITIONS',
@@ -2098,12 +2079,6 @@ D3D12_EXISTING_COLLECTION_DESC = Struct('D3D12_EXISTING_COLLECTION_DESC', [
     (Array(D3D12_EXPORT_DESC, '{self}.NumExports'), 'pExports'),
 ])
 
-D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION = Struct('D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION', [
-    (Pointer(Const(D3D12_STATE_SUBOBJECT)), 'pSubobjectToAssociate'),
-    (UINT, 'NumExports'),
-    (Array(LPCWSTR, '{self}.NumExports'), 'pExports'),
-])
-
 D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION = Struct('D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION', [
     (LPCWSTR, 'SubobjectToAssociate'),
     (UINT, 'NumExports'),
@@ -2130,6 +2105,32 @@ D3D12_RAYTRACING_SHADER_CONFIG = Struct('D3D12_RAYTRACING_SHADER_CONFIG', [
 
 D3D12_RAYTRACING_PIPELINE_CONFIG = Struct('D3D12_RAYTRACING_PIPELINE_CONFIG', [
     (UINT, 'MaxTraceRecursionDepth'),
+])
+
+# Avoid infinite recursion with a polymorph of no exports
+D3D12_STATE_SUBOBJECT_POLYMORPH_NO_EXPORTS = [
+    ('D3D12_STATE_SUBOBJECT_TYPE_STATE_OBJECT_CONFIG', Pointer(Const(D3D12_STATE_OBJECT_CONFIG))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_GLOBAL_ROOT_SIGNATURE', Pointer(Const(D3D12_GLOBAL_ROOT_SIGNATURE))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_LOCAL_ROOT_SIGNATURE', Pointer(Const(D3D12_LOCAL_ROOT_SIGNATURE))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_NODE_MASK', Pointer(Const(D3D12_NODE_MASK))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_DXIL_LIBRARY', Pointer(Const(D3D12_DXIL_LIBRARY_DESC))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_EXISTING_COLLECTION', Pointer(Const(D3D12_EXISTING_COLLECTION_DESC))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION', Pointer(Const(D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_SHADER_CONFIG', Pointer(Const(D3D12_RAYTRACING_SHADER_CONFIG))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_PIPELINE_CONFIG', Pointer(Const(D3D12_RAYTRACING_PIPELINE_CONFIG))),
+    ('D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP', Pointer(Const(D3D12_HIT_GROUP_DESC))),
+]
+
+D3D12_STATE_SUBOBJECT = Struct('D3D12_STATE_SUBOBJECT', [
+    (D3D12_STATE_SUBOBJECT_TYPE, 'Type'),
+    # NOTE(damcclos): Linked list of this object. Need to implement support.
+    (OpaquePointer(Const(Void)), 'pDesc'),
+])
+
+D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION = Struct('D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION', [
+    (Pointer(Const(D3D12_STATE_SUBOBJECT)), 'pSubobjectToAssociate'),
+    (UINT, 'NumExports'),
+    (Array(LPCWSTR, '{self}.NumExports'), 'pExports'),
 ])
 
 D3D12_RAYTRACING_PIPELINE_FLAGS = Enum('D3D12_RAYTRACING_PIPELINE_FLAGS', [
@@ -2515,23 +2516,23 @@ D3D12_DRED_ALLOCATION_NODE1.members += [
 ]
 
 D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT = Struct('D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT', [
-    Out(Pointer(Const(D3D12_AUTO_BREADCRUMB_NODE)), 'pHeadAutoBreadcrumbNode'),
+    (OpaquePointer(Const(D3D12_AUTO_BREADCRUMB_NODE)), 'pHeadAutoBreadcrumbNode'),
 ])
 
 D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1 = Struct('D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1', [
-    Out(Pointer(Const(D3D12_AUTO_BREADCRUMB_NODE1)), 'pHeadAutoBreadcrumbNode'),
+    (OpaquePointer(Const(D3D12_AUTO_BREADCRUMB_NODE1)), 'pHeadAutoBreadcrumbNode'),
 ])
 
 D3D12_DRED_PAGE_FAULT_OUTPUT = Struct('D3D12_DRED_PAGE_FAULT_OUTPUT', [
     (D3D12_GPU_VIRTUAL_ADDRESS, 'PageFaultVA'),
-    Out(Pointer(Const(D3D12_DRED_ALLOCATION_NODE)), 'pHeadExistingAllocationNode'),
-    Out(Pointer(Const(D3D12_DRED_ALLOCATION_NODE)), 'pHeadRecentFreedAllocationNode'),
+    (OpaquePointer(Const(D3D12_DRED_ALLOCATION_NODE)), 'pHeadExistingAllocationNode'),
+    (OpaquePointer(Const(D3D12_DRED_ALLOCATION_NODE)), 'pHeadRecentFreedAllocationNode'),
 ])
 
 D3D12_DRED_PAGE_FAULT_OUTPUT1 = Struct('D3D12_DRED_PAGE_FAULT_OUTPUT1', [
     (D3D12_GPU_VIRTUAL_ADDRESS, 'PageFaultVA'),
-    Out(Pointer(Const(D3D12_DRED_ALLOCATION_NODE1)), 'pHeadExistingAllocationNode'),
-    Out(Pointer(Const(D3D12_DRED_ALLOCATION_NODE1)), 'pHeadRecentFreedAllocationNode'),
+    (OpaquePointer(Const(D3D12_DRED_ALLOCATION_NODE1)), 'pHeadExistingAllocationNode'),
+    (OpaquePointer(Const(D3D12_DRED_ALLOCATION_NODE1)), 'pHeadRecentFreedAllocationNode'),
 ])
 
 D3D12_DEVICE_REMOVED_EXTENDED_DATA1 = Struct('D3D12_DEVICE_REMOVED_EXTENDED_DATA1', [
@@ -2727,12 +2728,12 @@ ID3D12RootSignature.methods += [
 ]
 
 ID3D12RootSignatureDeserializer.methods += [
-    StdMethod(Pointer(Const(D3D12_ROOT_SIGNATURE_DESC)), 'GetRootSignatureDesc', []),
+    StdMethod(OpaquePointer(Const(D3D12_ROOT_SIGNATURE_DESC)), 'GetRootSignatureDesc', [], sideeffects=False),
 ]
 
 ID3D12VersionedRootSignatureDeserializer.methods += [
-    StdMethod(HRESULT, 'GetRootSignatureDescAtVersion', [(D3D_ROOT_SIGNATURE_VERSION, 'convertToVersion'), Out(Pointer(Pointer(Const(D3D12_VERSIONED_ROOT_SIGNATURE_DESC))), 'ppDesc')]),
-    StdMethod(Pointer(Const(D3D12_VERSIONED_ROOT_SIGNATURE_DESC)), 'GetUnconvertedRootSignatureDesc', []),
+    StdMethod(HRESULT, 'GetRootSignatureDescAtVersion', [(D3D_ROOT_SIGNATURE_VERSION, 'convertToVersion'), Out(Pointer(OpaquePointer(Const(D3D12_VERSIONED_ROOT_SIGNATURE_DESC))), 'ppDesc')], sideeffects=False),
+    StdMethod(OpaquePointer(Const(D3D12_VERSIONED_ROOT_SIGNATURE_DESC)), 'GetUnconvertedRootSignatureDesc', [], sideeffects=False),
 ]
 
 ID3D12Pageable.methods += [
@@ -2888,7 +2889,7 @@ ID3D12Device.methods += [
     StdMethod(Void, 'CopyDescriptorsSimple', [(UINT, 'NumDescriptors'), (D3D12_CPU_DESCRIPTOR_HANDLE, 'DestDescriptorRangeStart'), (D3D12_CPU_DESCRIPTOR_HANDLE, 'SrcDescriptorRangeStart'), (D3D12_DESCRIPTOR_HEAP_TYPE, 'DescriptorHeapsType')]),
     StdMethod(D3D12_RESOURCE_ALLOCATION_INFO, 'GetResourceAllocationInfo', [(UINT, 'visibleMask'), (UINT, 'numResourceDescs'), (Array(Const(D3D12_RESOURCE_DESC), 'numResourceDescs'), 'pResourceDescs')]),
     StdMethod(D3D12_HEAP_PROPERTIES, 'GetCustomHeapProperties', [(UINT, 'nodeMask'), (D3D12_HEAP_TYPE, 'heapType')]),
-    StdMethod(HRESULT, 'CreateCommittedResource', [(Pointer(Const(D3D12_HEAP_PROPERTIES)), 'pHeapProperties'), (D3D12_HEAP_FLAGS, 'HeapFlags'), (Pointer(Const(D3D12_RESOURCE_DESC)), 'pDesc'), (D3D12_RESOURCE_STATES, 'InitialResourceState'), (Pointer(Const(D3D12_CLEAR_VALUE)), 'pOptimizedClearValue'), (REFIID, 'riidResource'), Out(Pointer(ObjPointer(Void)), 'ppvResource')]),
+    StdMethod(HRESULT, 'CreateCommittedResource', [(Pointer(Const(D3D12_HEAP_PROPERTIES)), 'pHeapProperties'), (D3D12_HEAP_FLAGS, 'HeapFlags'), (Pointer(Const(D3D12_RESOURCE_DESC)), 'pResourceDesc'), (D3D12_RESOURCE_STATES, 'InitialResourceState'), (Pointer(Const(D3D12_CLEAR_VALUE)), 'pOptimizedClearValue'), (REFIID, 'riidResource'), Out(Pointer(ObjPointer(Void)), 'ppvResource')]),
     StdMethod(HRESULT, 'CreateHeap', [(Pointer(Const(D3D12_HEAP_DESC)), 'pDesc'), (REFIID, 'riid'), Out(Pointer(ObjPointer(Void)), 'ppvHeap')]),
     StdMethod(HRESULT, 'CreatePlacedResource', [(ObjPointer(ID3D12Heap), 'pHeap'), (UINT64, 'HeapOffset'), (Pointer(Const(D3D12_RESOURCE_DESC)), 'pDesc'), (D3D12_RESOURCE_STATES, 'InitialState'), (Pointer(Const(D3D12_CLEAR_VALUE)), 'pOptimizedClearValue'), (REFIID, 'riid'), Out(Pointer(ObjPointer(Void)), 'ppvResource')]),
     StdMethod(HRESULT, 'CreateReservedResource', [(Pointer(Const(D3D12_RESOURCE_DESC)), 'pDesc'), (D3D12_RESOURCE_STATES, 'InitialState'), (Pointer(Const(D3D12_CLEAR_VALUE)), 'pOptimizedClearValue'), (REFIID, 'riid'), Out(Pointer(ObjPointer(Void)), 'ppvResource')]),
@@ -2947,7 +2948,7 @@ ID3D12ProtectedResourceSession.methods += [
 ID3D12Device4.methods += [
     StdMethod(HRESULT, 'CreateCommandList1', [(UINT, 'nodeMask'), (D3D12_COMMAND_LIST_TYPE, 'type'), (D3D12_COMMAND_LIST_FLAGS, 'flags'), (REFIID, 'riid'), Out(Pointer(ObjPointer(Void)), 'ppCommandList')]),
     StdMethod(HRESULT, 'CreateProtectedResourceSession', [(Pointer(Const(D3D12_PROTECTED_RESOURCE_SESSION_DESC)), 'pDesc'), (REFIID, 'riid'), Out(Pointer(ObjPointer(Void)), 'ppSession')]),
-    StdMethod(HRESULT, 'CreateCommittedResource1', [(Pointer(Const(D3D12_HEAP_PROPERTIES)), 'pHeapProperties'), (D3D12_HEAP_FLAGS, 'HeapFlags'), (Pointer(Const(D3D12_RESOURCE_DESC)), 'pDesc'), (D3D12_RESOURCE_STATES, 'InitialResourceState'), (Pointer(Const(D3D12_CLEAR_VALUE)), 'pOptimizedClearValue'), (ObjPointer(ID3D12ProtectedResourceSession), 'pProtectedSession'), (REFIID, 'riidResource'), Out(Pointer(ObjPointer(Void)), 'ppvResource')]),
+    StdMethod(HRESULT, 'CreateCommittedResource1', [(Pointer(Const(D3D12_HEAP_PROPERTIES)), 'pHeapProperties'), (D3D12_HEAP_FLAGS, 'HeapFlags'), (Pointer(Const(D3D12_RESOURCE_DESC)), 'pResourceDesc'), (D3D12_RESOURCE_STATES, 'InitialResourceState'), (Pointer(Const(D3D12_CLEAR_VALUE)), 'pOptimizedClearValue'), (ObjPointer(ID3D12ProtectedResourceSession), 'pProtectedSession'), (REFIID, 'riidResource'), Out(Pointer(ObjPointer(Void)), 'ppvResource')]),
     StdMethod(HRESULT, 'CreateHeap1', [(Pointer(Const(D3D12_HEAP_DESC)), 'pDesc'), (ObjPointer(ID3D12ProtectedResourceSession), 'pProtectedSession'), (REFIID, 'riid'), Out(Pointer(ObjPointer(Void)), 'ppvHeap')]),
     StdMethod(HRESULT, 'CreateReservedResource1', [(Pointer(Const(D3D12_RESOURCE_DESC)), 'pDesc'), (D3D12_RESOURCE_STATES, 'InitialState'), (Pointer(Const(D3D12_CLEAR_VALUE)), 'pOptimizedClearValue'), (ObjPointer(ID3D12ProtectedResourceSession), 'pProtectedSession'), (REFIID, 'riid'), Out(Pointer(ObjPointer(Void)), 'ppvResource')]),
     StdMethod(D3D12_RESOURCE_ALLOCATION_INFO, 'GetResourceAllocationInfo1', [(UINT, 'visibleMask'), (UINT, 'numResourceDescs'), (Array(Const(D3D12_RESOURCE_DESC), 'numResourceDescs'), 'pResourceDescs'), Out(Pointer(D3D12_RESOURCE_ALLOCATION_INFO1), 'pResourceAllocationInfo1')]),
