@@ -377,9 +377,9 @@ static void _setup_event_hooking()
 {
     // TODO(Josh): We need a better solution for this shit!!!
     uintptr_t processModule = reinterpret_cast<uintptr_t>(GetModuleHandleA(NULL));
-    
-    IATHook::IATHook(processModule, "kernel32.dll", "WaitForSingleObject",      reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForSingleObject));
-    IATHook::IATHook(processModule, "kernel32.dll", "WaitForSingleObjectEx",    reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForSingleObjectEx));
-    IATHook::IATHook(processModule, "kernel32.dll", "WaitForMultipleObjects",   reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForMultipleObjects));
-    IATHook::IATHook(processModule, "kernel32.dll", "WaitForMultipleObjectsEx", reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForMultipleObjectsEx));
+
+    //IATHook::IATHook(processModule, "kernel32.dll", "WaitForSingleObject",      reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForSingleObject));
+    //IATHook::IATHook(processModule, "kernel32.dll", "WaitForSingleObjectEx",    reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForSingleObjectEx));
+    //IATHook::IATHook(processModule, "kernel32.dll", "WaitForMultipleObjects",   reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForMultipleObjects));
+    //IATHook::IATHook(processModule, "kernel32.dll", "WaitForMultipleObjectsEx", reinterpret_cast<uintptr_t>(D3D12EventHooks::D3D12WaitForMultipleObjectsEx));
 }
